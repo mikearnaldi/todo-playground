@@ -115,19 +115,21 @@ export class ProgressBarService extends Effect.Service<ProgressBarService>()(
           completed,
           total
         );
+        // Write initial progress without newline using terminal service
         yield* terminal.display(initialProgress);
       });
 
       /**
        * Updates the progress display in the terminal.
        *
-       * This method handles terminal cursor positioning automatically:
-       * - Moves cursor up one line to overwrite the previous progress
-       * - Clears the current line completely
-       * - Displays the updated progress bar
+       * This method handles terminal cursor positioning using carriage return:
+       * - Uses carriage return (\r) to move cursor to beginning of current line
+       * - Overwrites the entire line with new progress information
+       * - No newlines are added, keeping the progress on the same line
+       * - Automatically adds a newline when progress reaches 100%
        *
-       * This creates a smooth, live-updating progress display without
-       * cluttering the terminal with multiple progress lines.
+       * This creates a smooth, live-updating progress display that stays
+       * on the same line without creating multiple lines.
        *
        * @param completed - Current number of completed items
        * @param total - Total number of items to process
@@ -138,7 +140,12 @@ export class ProgressBarService extends Effect.Service<ProgressBarService>()(
        * // Update progress to show 7 out of 10 completed
        * yield* progressBar.updateProgress(7, 10);
        * // Terminal shows: "⏳ Progress: [█████████████████████         ] 7/10 (70%)"
-       * // Previous progress line is automatically overwritten
+       * // Previous progress is overwritten on the same line
+       *
+       * // When progress reaches 100%, automatically adds newline
+       * yield* progressBar.updateProgress(10, 10);
+       * // Terminal shows: "⏳ Progress: [██████████████████████████████] 10/10 (100%)"
+       * // Followed by automatic newline for subsequent output
        * ```
        *
        * @since 1.0.0
@@ -151,8 +158,13 @@ export class ProgressBarService extends Effect.Service<ProgressBarService>()(
           completed,
           total
         );
-        // Move cursor up one line, clear it, and write new progress
-        yield* terminal.display(`\x1b[1A\x1b[2K${progressMessage}`);
+        // Use carriage return to go back to beginning of line and overwrite
+        yield* terminal.display(`\r${progressMessage}`);
+
+        // Automatically add newline when progress is complete
+        if (completed >= total) {
+          yield* terminal.display("\n");
+        }
       });
 
       return {

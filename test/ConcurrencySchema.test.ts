@@ -1,6 +1,5 @@
 import { describe, it, expect } from "@effect/vitest";
-import { FastCheck } from "effect";
-import * as Schema from "effect/Schema";
+import { FastCheck, Schema } from "effect";
 import { ConcurrencySchema } from "../src/cmd/syncTodos.js";
 
 // Helper to decode with ConcurrencySchema

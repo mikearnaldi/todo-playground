@@ -16,10 +16,8 @@
  * @since 1.0.0
  */
 
-import * as NodeContext from "@effect/platform-node/NodeContext";
-import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
-import * as Effect from "effect/Effect";
-import * as Layer from "effect/Layer";
+import { NodeContext, NodeRuntime } from "@effect/platform-node";
+import { Effect, Layer } from "effect";
 import { run } from "./Cli.js";
 import { TodoService } from "./service/TodoService.js";
 import { DatabaseService } from "./service/DatabaseService.js";
