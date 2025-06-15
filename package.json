@@ -1,0 +1,47 @@
+{
+  "name": "@template/cli",
+  "version": "0.0.0",
+  "type": "module",
+  "packageManager": "pnpm@9.10.0",
+  "license": "MIT",
+  "description": "A basic Effect CLI application",
+  "repository": {
+    "type": "git",
+    "url": "<PLACEHOLDER>"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "scripts": {
+    "build": "tsup && pnpm copy-package-json",
+    "build:ts": "tsup",
+    "clean": "rm -rf dist/*",
+    "check": "tsc -b tsconfig.json",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "copy-package-json": "tsx scripts/copy-package-json.ts",
+    "dev": "tsx src/bin.ts"
+  },
+  "devDependencies": {
+    "@effect/cli": "latest",
+    "@effect/language-service": "^0.1.0",
+    "@effect/platform": "latest",
+    "@effect/platform-node": "latest",
+    "@effect/sql": "latest",
+    "@effect/sql-sqlite-node": "latest",
+    "@effect/vitest": "latest",
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^22.5.2",
+    "better-sqlite3": "^11.0.0",
+    "effect": "latest",
+    "fast-check": "^4.1.1",
+    "tsup": "^8.2.4",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2",
+    "vitest": "^2.0.5"
+  },
+  "pnpm": {
+    "patchedDependencies": {}
+  }
+}
